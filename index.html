@@ -300,5 +300,17 @@ canvas.height=window.innerHeight;
 });
 </script>
 
+
+<script>
+const installer = document.getElementById("installer");
+const flashBtn = document.getElementById("flashBtn");
+
+flashBtn.addEventListener("click", () => {
+  installer.shadowRoot
+    .querySelector("button")
+    .click();
+});
+</script>
+  
 </body>
 </html>
