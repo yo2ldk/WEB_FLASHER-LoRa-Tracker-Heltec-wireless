@@ -27,7 +27,7 @@ body{
   overflow:hidden;
 }
 
-/* ===== CANVAS ===== */
+/* ===== CANVAS BACKGROUND ===== */
 #lora{
   position:fixed;
   inset:0;
@@ -82,7 +82,6 @@ main{
   box-shadow:0 0 80px rgba(0,212,255,0.08);
 }
 
-/* ICON */
 .hero-icon{
   width:120px;
   margin-bottom:25px;
@@ -113,24 +112,7 @@ h1 span{
   margin-bottom:50px;
 }
 
-/* ===== FLASH BUTTON SYSTEM ===== */
-
-<div class="flash-wrapper">
-  <esp-web-install-button id="installer" manifest="manifest.json"></esp-web-install-button>
-  <button id="flashBtn" class="flash-btn">⚡ FLASH FIRMWARE</button>
-</div>
-  
-
-
-/* componenta reală, invizibilă */
-#installer{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  cursor:pointer;
-}
-
-/* butonul vizibil */
+/* ===== CUSTOM FLASH BUTTON ===== */
 .flash-btn{
   font-family:'Exo 2';
   font-weight:700;
@@ -155,7 +137,7 @@ h1 span{
     0 0 30px rgba(0,212,255,0.3);
 }
 
-/* animated energy sweep */
+/* animated sweep */
 .flash-btn::before{
   content:"";
   position:absolute;
@@ -182,8 +164,12 @@ h1 span{
 
 .flash-btn:active{
   transform:scale(0.96);
-  box-shadow:
-    0 0 25px rgba(0,212,255,1);
+  box-shadow:0 0 25px rgba(0,212,255,1);
+}
+
+/* ===== HIDDEN INSTALLER ===== */
+esp-web-install-button{
+  display:none;
 }
 
 /* ===== FOOTER ===== */
@@ -217,10 +203,10 @@ footer{
 <h1>WEB <span>FLASHER</span></h1>
 <p class="sub">ESP32-S3 Firmware Installer · Direct din browser</p>
 
-<div class="flash-wrapper">
-  <esp-web-install-button id="installer" manifest="manifest.json"></esp-web-install-button>
-  <button class="flash-btn">⚡ FLASH FIRMWARE</button>
-</div>
+<button id="flashBtn" class="flash-btn">⚡ FLASH FIRMWARE</button>
+
+<!-- installer real, invizibil -->
+<esp-web-install-button id="installer" manifest="manifest.json"></esp-web-install-button>
 
 </div>
 </main>
@@ -230,6 +216,7 @@ github.com/yo2ldk/WEB-FLASHER · 2026
 </footer>
 
 <script>
+/* ===== BACKGROUND LoRa ===== */
 const canvas=document.getElementById("lora");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
@@ -256,7 +243,6 @@ for(let i=0;i<nodes.length;i++){
 let n=nodes[i];
 n.x+=n.vx;
 n.y+=n.vy;
-
 if(n.x<0||n.x>canvas.width)n.vx*=-1;
 if(n.y<0||n.y>canvas.height)n.vy*=-1;
 
@@ -273,7 +259,7 @@ let dist=Math.sqrt(dx*dx+dy*dy);
 if(dist<160){
 let pulse=(Math.sin(beacon*3 - dist*0.02)+1)/2;
 ctx.strokeStyle=`rgba(0,212,255,${pulse*(1-dist/160)})`;
-ctx.lineWidth=1.2;
+ctx.lineWidth=1;
 ctx.beginPath();
 ctx.moveTo(n.x,n.y);
 ctx.lineTo(nodes[j].x,nodes[j].y);
@@ -298,19 +284,18 @@ window.addEventListener("resize",()=>{
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 });
-</script>
 
+/* ===== FLASH CONTROL ===== */
+const flashBtn=document.getElementById("flashBtn");
+const installer=document.getElementById("installer");
 
-<script>
-const installer = document.getElementById("installer");
-const flashBtn = document.getElementById("flashBtn");
-
-flashBtn.addEventListener("click", () => {
-  installer.shadowRoot
-    .querySelector("button")
-    .click();
+flashBtn.addEventListener("click",()=>{
+  const internalBtn = installer.shadowRoot.querySelector("button");
+  if(internalBtn){
+    internalBtn.click();
+  }
 });
 </script>
-  
+
 </body>
 </html>
