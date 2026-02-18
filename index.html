@@ -188,10 +188,7 @@ footer{
 <div class="hud">
 NODE COUNT: <span id="nodeCount">0</span><br>
 
-VISITS:<br>
-<img src="https://visitorbadge.io/api/visitors?path=ultimatetracker&labelColor=111111&countColor=00ffff&style=flat"
-     style="margin-top:4px; filter: drop-shadow(0 0 6px #00ffff);">
-<br>
+VISITS: <span id="visitCount" class="hud-glow">000001</span><br>
   
 SIGNAL LEVEL: <span id="signal">-90</span> dBm<br>
 FREQ: 433.775 MHz<br>
@@ -322,6 +319,33 @@ setState("error");
 </script>
 
 
+<script>
+const counterElement = document.getElementById("visitCount");
+
+let visits = localStorage.getItem("yo2ldk_visits");
+
+if (!visits) {
+  visits = 1;
+} else {
+  visits = parseInt(visits) + 1;
+}
+
+localStorage.setItem("yo2ldk_visits", visits);
+
+// animație tip digital counter
+let current = 0;
+const target = visits;
+const increment = Math.max(1, Math.floor(target / 50));
+
+const interval = setInterval(() => {
+  current += increment;
+  if (current >= target) {
+    current = target;
+    clearInterval(interval);
+  }
+  counterElement.textContent = current.toString().padStart(6, '0');
+}, 20);
+</script>
 
   
 
