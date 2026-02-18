@@ -35,6 +35,14 @@ body{
   z-index:0;
   background:radial-gradient(circle at center,#0b1625 0%,#04070d 70%);
 }
+  .hud-glow{
+  color: var(--accent);
+  text-shadow:
+    0 0 5px var(--accent),
+    0 0 10px var(--accent),
+    0 0 20px var(--accent);
+  letter-spacing:2px;
+}
 
 /* ===== HEADER ===== */
 header{
@@ -179,6 +187,7 @@ footer{
 
 <div class="hud">
 NODE COUNT: <span id="nodeCount">0</span><br>
+VISITS: <span id="visitCount" class="hud-glow">000000</span><br>
 SIGNAL LEVEL: <span id="signal">-90</span> dBm<br>
 FREQ: 433.775 MHz<br>
 MODE: LoRa SF12 BW125<br>
@@ -299,13 +308,39 @@ try{
 setState("connecting");
 const internal=installer.shadowRoot.querySelector("button");
 internal.click();
-setTimeout(()=>setState("flashing"),2000);
-setTimeout(()=>setState("done"),9000);
+setTimeout(()=>setState("flashing"),5000);
+setTimeout(()=>setState("done"),10000);
 }catch{
 setState("error");
 }
 });
 </script>
 
+<script>
+fetch("https://api.countapi.xyz/hit/yo2ldk-webflasher/visits")
+  .then(res => res.json())
+  .then(data => {
+
+    const target = data.value;
+    const counter = document.getElementById("visitCount");
+
+    let current = 0;
+    const speed = Math.max(10, target / 100);
+
+    const interval = setInterval(() => {
+      current += Math.ceil(speed);
+      if(current >= target){
+        current = target;
+        clearInterval(interval);
+      }
+      counter.textContent = current.toString().padStart(6,'0');
+    }, 20);
+
+  })
+  .catch(() => {
+    document.getElementById("visitCount").textContent = "ERROR";
+  });
+</script>
+  
 </body>
 </html>
