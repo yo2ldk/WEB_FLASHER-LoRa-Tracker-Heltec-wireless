@@ -187,7 +187,12 @@ footer{
 
 <div class="hud">
 NODE COUNT: <span id="nodeCount">0</span><br>
-VISITS: <span id="visitCount" class="hud-glow">000000</span><br>
+
+VISITS:<br>
+<img src="https://visitorbadge.io/api/visitors?path=yo2ldk-ultimate-tracker&labelColor=111111&countColor=00ffff&style=flat"
+     style="margin-top:4px; filter: drop-shadow(0 0 6px #00ffff);">
+<br>
+  
 SIGNAL LEVEL: <span id="signal">-90</span> dBm<br>
 FREQ: 433.775 MHz<br>
 MODE: LoRa SF12 BW125<br>
@@ -316,44 +321,9 @@ setState("error");
 });
 </script>
 
-<script>
-const namespace = "yo2ldkmissioncontrol";
-const key = "visits";
 
-fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
-  .then(res => res.json())
-  .then(data => {
 
-    // dacă nu există încă, îl creăm
-    if(!data.value){
-      return fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
-    }
-    return data;
-
-  })
-  .then(res => res.json())
-  .then(data => {
-
-    const target = data.value;
-    const counter = document.getElementById("visitCount");
-
-    let current = 0;
-    const increment = Math.max(1, Math.floor(target / 80));
-
-    const interval = setInterval(() => {
-      current += increment;
-      if(current >= target){
-        current = target;
-        clearInterval(interval);
-      }
-      counter.textContent = current.toString().padStart(6,'0');
-    }, 20);
-
-  })
-  .catch(() => {
-    document.getElementById("visitCount").textContent = "OFFLINE";
-  });
-</script>
+  
 
   
 </body>
