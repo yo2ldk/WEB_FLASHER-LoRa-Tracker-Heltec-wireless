@@ -2,7 +2,7 @@
 
 TNX  to  my friend Jose Melo CT4TX, who "forced" me to do it .. :)
            
-  https://yo2ldk.github.io/WEB_FLASHER/
+ (https://yo2ldk.github.io/WEB_FLASHER-LoRa-Tracker-Heltec-wireless/)
   
 Device :  Heltec V1.2 htit Wireless Tracker, ESP32S3 + SX1262 +GPS LoRa Node
 <img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/a92e25e4-94be-48cf-ba91-f091be335c8a" />
